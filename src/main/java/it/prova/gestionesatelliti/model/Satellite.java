@@ -43,6 +43,8 @@ public class Satellite {
 	@Enumerated(EnumType.STRING)
 	private StatoSatellite stato;
 
+	
+
 
 	public Long getId() {
 		return id;
