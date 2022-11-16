@@ -66,37 +66,38 @@ public class SatelliteController {
 
 		if (satellite.getDataLancio() != null && satellite.getDataRientro() != null
 				&& satellite.getDataLancio().after(satellite.getDataRientro())) {
+			result.rejectValue("dataLancio","Satellite.dataLancio.mustBe.piuPiccolo");
+			result.rejectValue("dataRientro","Satellite.dataRientro.mustBe.piuGrande");
 			
-			model.addAttribute("errorMessage", "ATTENZIONE ERRORE DATE");
 			return "satellite/insert";
 		}
 
 		if (satellite.getDataRientro() != null && satellite.getDataLancio() == null) {
-			model.addAttribute("errorMessage", "ATTENZIONE DATA DI RIENTRO DOPO QUELLA DI LANCIO");
+			result.rejectValue("dataRientro","Satellite.dataRientro.mustBeNUll");			
 			return "satellite/insert";
 		}
 
 		if (satellite.getDataLancio() != null && satellite.getDataRientro() != null
 				&& satellite.getDataLancio().before(new Date()) && satellite.getDataRientro().before(new Date())
 				&& (satellite.getStato() == null || satellite.getStato() != StatoSatellite.DISATTIVATO)) {
-			model.addAttribute("errorMessage", "ATTENZIONE LO STATO DEVE ESSERE DEVE ESSERE:DISATTIVATO");
+			result.rejectValue("stato","Satellite.stato.mustBe.DISATTIVATO");
 			return "satellite/insert";
 		}
 
 		if (satellite.getDataLancio() == null && satellite.getDataRientro() == null && satellite.getStato() != null) {
-			model.addAttribute("errorMessage", "ATTENZIONE LO STATO DEVE ESSERE INSERITO DOPO IL LANCIO");
+			result.rejectValue("stato","satellite.stato.mustBe.inseritoDopoLancio");
 			return "satellite/insert";
 		}
 
 		if (satellite.getDataLancio() != null && satellite.getDataLancio().before(new Date())
 				&& satellite.getStato() == null) {
-			model.addAttribute("errorMessage", "ATTENZIONE INSERIRE UNO STATO DOPO IL LANCIO");
+			result.rejectValue("stato","satellite.stato.mustBe.inseritoDopoLancio");
 			return "satellite/insert";
 		}
 
 		if (satellite.getDataLancio() != null && satellite.getDataLancio().after(new Date())
 				&& satellite.getStato() != null) {
-			model.addAttribute("errorMessage", "ATTENZIONE LO STATO DEVE ESSERE INSERITO DOPO IL LANCIO");
+			result.rejectValue("stato","satellite.stato.mustBe.inseritoDopoLancio");
 			return "satellite/insert";
 		}
 
@@ -122,13 +123,12 @@ public class SatelliteController {
 	}
 
 	@PostMapping("/saveDelete")
-	public String saveDelete(@RequestParam(name = "idSatellite") Long idSatellite, RedirectAttributes redirectAttrs,Model model) {
+	public String saveDelete(@RequestParam(name = "idSatellite") Long idSatellite, RedirectAttributes redirectAttrs,Model model,BindingResult result) {
 		Satellite satellite = satelliteService.caricaSingoloElemento(idSatellite);
 		if(satellite.getDataLancio() != null && satellite.getDataRientro() == null &&satellite.getStato()!=StatoSatellite.DISATTIVATO) {
-			model.addAttribute("errorMessage", "ATTENZIONE ERRORE DATE");
+			result.rejectValue("dataRientro","Satellite.dataRientro.mustBeInsert");
 		    return "satellite/update";
-		}
-		
+		}	
 	
 		satelliteService.rimuovi(idSatellite);		
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
@@ -148,37 +148,37 @@ public class SatelliteController {
 
 		if (satellite.getDataLancio() != null && satellite.getDataRientro() != null
 				&& satellite.getDataLancio().after(satellite.getDataRientro())) {
-			model.addAttribute("errorMessage", "ATTENZIONE ERRORE DATE");
+			result.rejectValue("dataLancio","Satellite.dataLancio.mustBe.piuPiccolo");
+			result.rejectValue("dataRientro","Satellite.dataRientro.mustBe.piuGrande");
 			return "satellite/update";
 		}
 
 		if (satellite.getDataRientro() != null && satellite.getDataLancio() == null) {
-			model.addAttribute("errorMessage", "ATTENZIONE INSERIRE DATA DI LANCIO PRIMA DEL RIENTRO");
+			result.rejectValue("dataRientro","Satellite.dataRientro.mustBeNUll");
 			return "satellite/update";
 		}
 
 		if (satellite.getDataLancio() != null && satellite.getDataRientro() != null
 				&& satellite.getDataLancio().before(new Date()) && satellite.getDataRientro().before(new Date())
 				&& (satellite.getStato() == null || satellite.getStato() != StatoSatellite.DISATTIVATO)) {
-			model.addAttribute("errorMessage",
-					"ATTENZIONE INSERIRE STATO DISATTIVATO SE GIA INSERITE ENTRAMBE LE DATE");
+			result.rejectValue("stato","satellite.stato.mustBeInsert");
 			return "satellite/update";
 		}
 
 		if (satellite.getDataLancio() == null && satellite.getDataRientro() == null && satellite.getStato() != null) {
-			model.addAttribute("errorMessage", "ATTENZIONE INSERIRE STATO DOPO DATA DI LANCIO");
+			result.rejectValue("stato","satellite.stato.mustBe.inseritoDopoLancio");
 			return "satellite/update";
 		}
 
 		if (satellite.getDataLancio() != null && satellite.getDataLancio().before(new Date())
 				&& satellite.getStato() == null) {
-			model.addAttribute("errorMessage", "ATTENZIONE INSERIRE UNO STATO DOPO IL LANCIO");
+			result.rejectValue("stato","satellite.stato.mustBe.inseritoDopoLancio");
 			return "satellite/update";
 		}
 
 		if (satellite.getDataLancio() != null && satellite.getDataLancio().after(new Date())
 				&& satellite.getStato() != null) {
-			model.addAttribute("errorMessage", "ATTENZIONE INSERIRE UNO STATO DOPO IL LANCIO");
+			result.rejectValue("stato","satellite.stato.mustBe.inseritoDopoLancio");
 			return "satellite/update";
 		}
 
