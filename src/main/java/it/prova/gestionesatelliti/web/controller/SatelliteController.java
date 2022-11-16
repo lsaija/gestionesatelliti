@@ -253,4 +253,30 @@ public class SatelliteController {
 		mv.setViewName("satellite/list");
 		return mv;
 	}
+	
+	@GetMapping("/disabilitaTutti")
+	public ModelAndView disabilitaTutti() {
+		ModelAndView mv = new ModelAndView();
+		List<Satellite> satelliti=satelliteService.listAllElements();
+		List<Satellite> results = satelliteService.cercaTuttiSatellitiNonRientrati();
+		mv.addObject("numeroSatellite_list_attribute",satelliti.size());
+		mv.addObject("numeroSatelliteModificati_list_attribute", results.size());
+		mv.setViewName("satellite/disabilita");
+		return mv;
+	}
+	
+	@PostMapping("/saveDisabilita")
+	public ModelAndView saveDisabilta(RedirectAttributes redirectAttrs) {
+		ModelAndView mv = new ModelAndView();		
+		List<Satellite> results = satelliteService.cercaTuttiSatellitiNonRientrati();
+		
+		for(Satellite item: results) {
+			item.setDataRientro(new Date());
+			item.setStato(StatoSatellite.DISATTIVATO);
+			satelliteService.aggiorna(item);
+		}
+		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
+		mv.setViewName("redirect:/home");
+		return mv;
+	}
 }
