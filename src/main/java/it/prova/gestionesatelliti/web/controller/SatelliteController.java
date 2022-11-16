@@ -34,16 +34,18 @@ public class SatelliteController {
 	private SatelliteService satelliteService;
 
 	@GetMapping
-	public ModelAndView listAll() {
+	public ModelAndView listAll(Model model) {
 		ModelAndView mv = new ModelAndView();
 		List<Satellite> results = satelliteService.listAllElements();
+		model.addAttribute("todayDate_attr", new Date());
 		mv.addObject("satellite_list_attribute", results);
 		mv.setViewName("satellite/list");
 		return mv;
 	}
 
 	@GetMapping("/search")
-	public String search() {
+	public String search(Model model) {
+		model.addAttribute("todayDate_attr", new Date());
 		return "satellite/search";
 	}
 
@@ -51,6 +53,7 @@ public class SatelliteController {
 	public String listByExample(Satellite example, ModelMap model) {
 		List<Satellite> results = satelliteService.findByExample(example);
 		model.addAttribute("satellite_list_attribute", results);
+		model.addAttribute("todayDate_attr", new Date());
 		return "satellite/list";
 	}
 

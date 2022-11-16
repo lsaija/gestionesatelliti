@@ -1,6 +1,7 @@
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+
 <!doctype html>
 <html lang="it" class="h-100" >
 	 <head>
@@ -81,7 +82,7 @@
 														</c:if>
 													</div>
 													<div style="margin-left: 4px">
-														<c:if test="${satelliteItem.dataRientro == null }">
+														<c:if test="${satelliteItem.dataRientro == null || satelliteItem.dataRientro.after(todayDate_attr) }">
 															<form method="post" action="${pageContext.request.contextPath}/satellite/rientro">
 																<button type="submit" name="submit" value="submit" id="submit" class="btn btn-outline-primary btn-sm">Rientra</button>
 																<input type="hidden" name="idSatellite" value="${satelliteItem.id}">

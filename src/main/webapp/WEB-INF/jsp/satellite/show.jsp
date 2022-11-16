@@ -48,7 +48,7 @@
 					    	
 					    	<dl class="row">
 							  <dt class="col-sm-3 text-right">Data di Rientro:</dt>
-							  <dd class="col-sm-9"><fmt:formatDate type="date" value = "${show_impiegato_attr.dataRientro}" /></dd>
+							  <dd class="col-sm-9"><fmt:formatDate type="date" value = "${show_satellite_attr.dataRientro}" /></dd>
 					    	</dl>
 					    	
 					    	<dl class="row">
