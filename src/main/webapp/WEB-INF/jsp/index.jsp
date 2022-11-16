@@ -53,6 +53,9 @@
 				        <h1 class="display-5 fw-bold">Benvenuto alla Gestione Satellite</h1>
 				        <p class="col-md-8 fs-4">Using a series of utilities, you can create this jumbotron, just like the one in previous versions of Bootstrap. </p>
 				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/search">Vai a Ricerca</a>
+				      <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/listAllDueAnni">Vai alla Lista SatellitiDueAnni</a>
+				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/listAllDisattivati">Vai alla Lista SatellitiDisattivati</a>
+				        <a class="btn btn-primary btn-lg" href="${pageContext.request.contextPath}/satellite/listAllDieciAnniOrbita">Vai a alla Lista SatellitiDieciAnniOrbita</a>
 				      </div>
 			    </div>
 			    

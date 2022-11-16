@@ -1,5 +1,6 @@
 package it.prova.gestionesatelliti.web.controller;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -202,5 +203,44 @@ public class SatelliteController {
 		model.addAttribute("todayDate_attr", new Date());
 		model.addAttribute("satellite_list_attribute", satelliteService.listAllElements());
 		return "satellite/list";
+	}
+	
+	@GetMapping("/listAllDueAnni")
+	public ModelAndView listAllDueAnni() {
+		ModelAndView mv = new ModelAndView();
+		
+		Date dataProva = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dataProva);
+		calendar.add(Calendar.YEAR, -2);
+		Date dataMenoDue = calendar.getTime();
+		List<Satellite> results = satelliteService.cercaTuttiSatellitiDueAnni(dataMenoDue);
+		mv.addObject("satellite_list_attribute", results);
+		mv.setViewName("satellite/list");
+		return mv;
+	}
+	
+	@GetMapping("/listAllDisattivati")
+	public ModelAndView listAllDisattivati() {
+		ModelAndView mv = new ModelAndView();
+		List<Satellite> results = satelliteService.cercaTuttiSatellitiOffDataRientroNull();
+		mv.addObject("satellite_list_attribute", results);
+		mv.setViewName("satellite/list");
+		return mv;
+	}
+	
+	@GetMapping("/listAllDieciAnniOrbita")
+	public ModelAndView listAllDieciAnniOrbita() {
+		ModelAndView mv = new ModelAndView();
+		
+		Date dataProva = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(dataProva);
+		calendar.add(Calendar.YEAR, -10);
+		Date dataMenoDue = calendar.getTime();
+		List<Satellite> results = satelliteService.cercaTuttiSatellitiDieciAnniOrbita(dataMenoDue);
+		mv.addObject("satellite_list_attribute", results);
+		mv.setViewName("satellite/list");
+		return mv;
 	}
 }
