@@ -66,6 +66,7 @@ public class SatelliteController {
 
 		if (satellite.getDataLancio() != null && satellite.getDataRientro() != null
 				&& satellite.getDataLancio().after(satellite.getDataRientro())) {
+			
 			model.addAttribute("errorMessage", "ATTENZIONE ERRORE DATE");
 			return "satellite/insert";
 		}
@@ -121,10 +122,15 @@ public class SatelliteController {
 	}
 
 	@PostMapping("/saveDelete")
-	public String saveDelete(@RequestParam(name = "idSatellite") Long idSatellite, RedirectAttributes redirectAttrs) {
-
-		satelliteService.rimuovi(idSatellite);
-
+	public String saveDelete(@RequestParam(name = "idSatellite") Long idSatellite, RedirectAttributes redirectAttrs,Model model) {
+		Satellite satellite = satelliteService.caricaSingoloElemento(idSatellite);
+		if(satellite.getDataLancio() != null && satellite.getDataRientro() == null &&satellite.getStato()!=StatoSatellite.DISATTIVATO) {
+			model.addAttribute("errorMessage", "ATTENZIONE ERRORE DATE");
+		    return "satellite/update";
+		}
+		
+	
+		satelliteService.rimuovi(idSatellite);		
 		redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 		return "redirect:/satellite";
 	}
@@ -186,6 +192,7 @@ public class SatelliteController {
 	public String lancia(@RequestParam(name = "idSatellite") Long idSatellite, ModelMap model) {
 		Satellite satellite = satelliteService.caricaSingoloElemento(idSatellite);
 		satellite.setDataLancio(new Date());
+		satellite.setStato(StatoSatellite.IN_MOVIMENTO);
 		satelliteService.aggiorna(satellite);
 		model.addAttribute("todayDate_attr", new Date());
 		model.addAttribute("satellite_list_attribute", satelliteService.listAllElements());
